@@ -18,11 +18,15 @@ using System.Diagnostics;
 
 namespace WebBrowserExample
 {
+    public delegate void DomMouseMoveEventHandler(Object source, MouseMoveEventArgs args);
+
     /// <summary>
     /// Interaction logic for WebBrowserAdapter.xaml
     /// </summary>
     public partial class WebBrowserAdapter : UserControl
     {
+        public event DomMouseMoveEventHandler DomMouseMove;
+
         public WebBrowserAdapter()
         {
             InitializeComponent();
@@ -32,8 +36,8 @@ namespace WebBrowserExample
         void WebBrowserAdapter_Loaded(object sender, RoutedEventArgs e)
         {
             WebBrowserControl.LoadCompleted += WebBrowserControl_LoadCompleted;
-            //WebBrowserControl.Navigate("http://www.google.com");
-            WebBrowserControl.Navigate("http://localhost:9080/console/span.html");
+            WebBrowserControl.Navigate("http://www.google.com");
+            //WebBrowserControl.Navigate("http://localhost:9080/console/span.html");
             //WebBrowserControl.Navigate("file:///C:/Temp/span.html");
         }
 
@@ -60,14 +64,31 @@ namespace WebBrowserExample
         private void HookOnMouseMove()
         {
             var document = WebBrowserControl.Document as HTMLDocument;
-            var documentEvents = document as HTMLDocumentEvents_Event;
-            documentEvents.onmousemove += documentEvents_onmousemove;
+            //var documentEvents = document as HTMLDocumentEvents_Event;
+            //documentEvents.onmousemove += documentEvents_onmousemove;
+
+            document.attachEvent("onmousemove", new DomMouseMoveEventManager());
+
         }
 
         void documentEvents_onmousemove()
         {
             var now = DateTime.Now;
-            Console.WriteLine("mousemove: " + now.Ticks);
+            var doc = WebBrowserControl.Document as HTMLDocument;
+            var window = doc.parentWindow as HTMLWindow2;
+            var currentEvent = window.@event;
+
+            diagnosticBlock.Text = "[" + currentEvent.clientX + "; " + currentEvent.clientY + "]";
+            OnDomMouseMove(currentEvent.clientX, currentEvent.clientY);
+        }
+
+        protected void OnDomMouseMove(int clientX, int clientY)
+        {
+            if (DomMouseMove != null)
+            {
+                var args = new MouseMoveEventArgs(clientX, clientY);
+                DomMouseMove(this, args);
+            }
         }
 
         private void IncjectClickOnSpanElementScript()
