@@ -6,12 +6,12 @@ using System.Windows;
 
 namespace WebBrowserExample
 {
-    public class MouseMoveEventArgs : RoutedEventArgs
+    public class DomMouseMoveEventArgs : RoutedEventArgs
     {
         public int ClientX { get; set; }
         public int ClientY { get; set; }
 
-        public MouseMoveEventArgs(int clientX, int clientY)
+        public DomMouseMoveEventArgs(int clientX, int clientY)
         {
             ClientX = clientX;
             ClientY = clientY;

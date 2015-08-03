@@ -57,7 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DomMouseMoveEventManager.cs" />
-    <Compile Include="MouseMoveEventArgs.cs" />
+    <Compile Include="DomMouseMoveEventArgs.cs" />
     <Compile Include="WebBrowserAdapter.xaml.cs">
       <DependentUpon>WebBrowserAdapter.xaml</DependentUpon>
     </Compile>

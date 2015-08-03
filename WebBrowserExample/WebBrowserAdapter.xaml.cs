@@ -18,19 +18,37 @@ using System.Diagnostics;
 
 namespace WebBrowserExample
 {
-    public delegate void DomMouseMoveEventHandler(Object source, MouseMoveEventArgs args);
+    public delegate void DomMouseMoveEventHandler(Object source, DomMouseMoveEventArgs args);
 
     /// <summary>
     /// Interaction logic for WebBrowserAdapter.xaml
     /// </summary>
+    [ComVisible(true)]
+    [ClassInterface(ClassInterfaceType.AutoDispatch)]
     public partial class WebBrowserAdapter : UserControl
     {
+        [DispId(0)]
+        public void CallbackFunction(mshtml.IHTMLEventObj arg)
+        {
+            Console.WriteLine(String.Format("[{0}, {1}]", arg.clientX, arg.clientY));
+        }
+
         public event DomMouseMoveEventHandler DomMouseMove;
+
+        private DomMouseMoveEventManager mouseMoveManager;
 
         public WebBrowserAdapter()
         {
             InitializeComponent();
             this.Loaded += WebBrowserAdapter_Loaded;
+            mouseMoveManager = new DomMouseMoveEventManager();
+            mouseMoveManager.DomMouseMove += mouseMoveManager_DomMouseMove;
+        }
+
+        void mouseMoveManager_DomMouseMove(object source, DomMouseMoveEventArgs args)
+        {
+            diagnosticBlock.Text = "[" + args.ClientX + "; " + args.ClientY + "]";
+            OnDomMouseMove(args.ClientX, args.ClientY);
         }
 
         void WebBrowserAdapter_Loaded(object sender, RoutedEventArgs e)
@@ -67,7 +85,7 @@ namespace WebBrowserExample
             //var documentEvents = document as HTMLDocumentEvents_Event;
             //documentEvents.onmousemove += documentEvents_onmousemove;
 
-            document.attachEvent("onmousemove", new DomMouseMoveEventManager());
+            document.attachEvent("onmousemove", mouseMoveManager);
 
         }
 
@@ -86,7 +104,7 @@ namespace WebBrowserExample
         {
             if (DomMouseMove != null)
             {
-                var args = new MouseMoveEventArgs(clientX, clientY);
+                var args = new DomMouseMoveEventArgs(clientX, clientY);
                 DomMouseMove(this, args);
             }
         }
