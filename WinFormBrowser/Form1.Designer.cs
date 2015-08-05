@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.webBrowserControl = new System.Windows.Forms.WebBrowser();
+            this.toggle = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // webBrowserControl
@@ -40,11 +41,22 @@
             this.webBrowserControl.Size = new System.Drawing.Size(1012, 521);
             this.webBrowserControl.TabIndex = 0;
             // 
+            // toggle
+            // 
+            this.toggle.Location = new System.Drawing.Point(405, 477);
+            this.toggle.Name = "toggle";
+            this.toggle.Size = new System.Drawing.Size(116, 23);
+            this.toggle.TabIndex = 1;
+            this.toggle.Text = "Toggle selection";
+            this.toggle.UseVisualStyleBackColor = true;
+            this.toggle.Click += new System.EventHandler(this.toggle_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1012, 521);
+            this.Controls.Add(this.toggle);
             this.Controls.Add(this.webBrowserControl);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -55,6 +67,7 @@
         #endregion
 
         private System.Windows.Forms.WebBrowser webBrowserControl;
+        private System.Windows.Forms.Button toggle;
     }
 }
 

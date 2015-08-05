@@ -20,14 +20,19 @@ namespace WinFormBrowser
 
         void Form1_Load(object sender, EventArgs e)
         {
-            webBrowserControl.Navigate("file:///C:/Temp/span.html");
+            webBrowserControl.Navigate("file:///C:/Temp/select.html");
             webBrowserControl.Navigated += webBrowserControl_Navigated;
         }
 
         void webBrowserControl_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
-            InjectConfirmHijack();
-            IncjectClickOnSpanElementScript();
+            //InjectConfirmHijack();
+            //IncjectClickOnSpanElementScript();
+            
+        }
+
+        private void RemoveSelectedAttributeBy()
+        {
         }
 
         private void IncjectClickOnSpanElementScript()
@@ -70,6 +75,11 @@ namespace WinFormBrowser
             var script = webBrowserControl.Document.CreateElement("script");
             script.InnerHtml = scriptText; // "<script>" + scriptText + "</script>";
             headElement.AppendChild(script);
+        }
+
+        private void toggle_Click(object sender, EventArgs e)
+        {
+            webBrowserControl.Document.GetElementById("togglingOption").SetAttribute("selected", "");
         }
     }
 }
