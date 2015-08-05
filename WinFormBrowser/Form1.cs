@@ -26,8 +26,22 @@ namespace WinFormBrowser
 
         void webBrowserControl_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
-            InjectConfirmHijack();
-            IncjectClickOnSpanElementScript();
+            InjectCookieSetterScript();
+            // InjectConfirmHijack();
+            // IncjectClickOnSpanElementScript();
+        }
+
+        private void InjectCookieSetterScript()
+        {
+            String script =
+@"function setCookie()
+{
+    alert('adding cookie');
+    document.cookie = ""myCookie=value;path=/"";
+    alert(document.cookie);
+}";
+            InjectScript(script);
+            webBrowserControl.Document.InvokeScript("setCookie");
         }
 
         private void IncjectClickOnSpanElementScript()
